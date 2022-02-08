@@ -43,7 +43,6 @@ def edit_item(request, item_id):
     return render(request, 'todo/edit_item.html', context)
 
 
-
 def toggle_item(request, item_id):
     """toggle item"""
     item = get_object_or_404(Item, id=item_id)
