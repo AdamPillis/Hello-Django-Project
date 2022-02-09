@@ -5,7 +5,7 @@ from .models import Item
 class TestViews(TestCase):
     """To test each function of crud"""
 
-    def get_todo_list(self):
+    def test_get_todo_list(self):
         """testing homepage. '/' stands for standard homepage"""
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
@@ -44,3 +44,11 @@ class TestViews(TestCase):
         self.assertRedirects(response, '/')
         updated_item = Item.objects.get(id=item.id)
         self.assertFalse(updated_item.done)
+
+    def test_can_edit_item(self):
+        """testing if posting method works within edit function"""
+        item = Item.objects.create(name='Test Todo Item')
+        response = self.client.post(f'/edit/{item.id}', {'name': 'Updated Name'})
+        self.assertRedirects(response, '/')
+        updated_item = Item.objects.get(id=item.id)
+        self.assertEqual(updated_item.name, 'Updated Name')
